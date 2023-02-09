@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebServicesEmpresaX.Model.Request;
 using WebServicesEmpresaX.Model;
 using WebServicesEmpresaX.Model.Response;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace WebServicesEmpresaX.Controllers
 {
@@ -21,7 +21,17 @@ namespace WebServicesEmpresaX.Controllers
             {
                 using (EmpresaXContext db = new EmpresaXContext())
                 {
-                    var lst = db.Clientes.ToList();
+                    var lst = from c in db.Clientes.ToList()
+                              join d in db.Direcciones.ToList()
+                              on c.ClienteId equals d.ClienteId
+                              select new { 
+                                          c.Nombres,
+                                          c.Apellidos,
+                                          d.Calle,
+                                          d.Sector,
+                                          d.Ciudad
+                                          };
+
                     Orespuesta.Exito = 1;
                     Orespuesta.Data = lst;
                 }
