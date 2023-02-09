@@ -25,6 +25,7 @@ namespace WebServicesEmpresaX.Controllers
                               join d in db.Direcciones.ToList()
                               on c.ClienteId equals d.ClienteId
                               select new { 
+                                          c.ClienteId,
                                           c.Nombres,
                                           c.Apellidos,
                                           d.Calle,
